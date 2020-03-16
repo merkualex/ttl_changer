@@ -1,0 +1,99 @@
+﻿<Window x:Class="TTLChanger_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:materialDesignConverters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf"      
+        xmlns:local="clr-namespace:TTLChanger_WPF"
+        mc:Ignorable="d"
+        Title="TTL Changer" Height="350" Width="525" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <materialDesignConverters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter" TrueValue="Collapsed" FalseValue="Visible" />
+            <Color x:Key="Text_Color">#FF3891CD</Color>
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+    <Grid Background="#FFEEEEEE" MouseDown="Grid_MouseDown" >
+        <StackPanel VerticalAlignment="Bottom">
+            <Grid Margin="0 0 5 5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <Button Name="btn_Exit" Command="{Binding Shutdown}" Margin="10 0 0 0" ToolTip="Exit" Width="20" Height="20" BorderBrush="#FF007ACC" Background="Transparent">
+                        <materialDesign:PackIcon Kind="Power" Foreground="#FF007ACC" />
+                    </Button>
+                </StackPanel>
+
+            </Grid>
+            <Grid Background="#FF007ACC" Height="5" />
+        </StackPanel>
+        <Grid Margin="5 5 5 35" HorizontalAlignment="Stretch" >
+            <Grid x:Name="MainGrid" >
+                <materialDesign:TransitioningContent OpeningEffect="{materialDesign:TransitionEffect FadeIn, Duration=0:0:0.5}" >
+                    <Grid>
+                        <StackPanel VerticalAlignment="Bottom" >
+                            <StackPanel.Resources>
+                                <Storyboard x:Key="fadein">
+                                    <DoubleAnimation Storyboard.TargetName="Notification" Storyboard.TargetProperty="(TextBlock.Opacity)" From="1" To="0" Duration="0:0:2" AutoReverse="False"/>
+                                </Storyboard>
+                            </StackPanel.Resources>
+                            <Grid Background="#FF007ACC" Height="1" Margin="10 0 10 0"/>
+
+                            <Grid Background="Transparent" Height="100">
+                                <Label Content="Перезагрузите ПК после установки/удаления TTL"  Margin="0,10,0,0" FontSize="12" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Top" Opacity="50"></Label>
+                                <Grid Margin="20">
+                                    <Button x:Name="btn_setup_TTL" Command="{Binding SetValue}" HorizontalAlignment="Center" Margin="0,25,250,0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="150" materialDesign:RippleAssist.Feedback="#FF007ACC" Background="{DynamicResource {x:Static SystemColors.MenuBarBrushKey}}">Установить TTL
+                                    </Button>
+                                    <Button x:Name="btn_delete_TTL" Command="{Binding DeleteValue}" HorizontalAlignment="Center" Margin="0,25,-250,0" Style="{StaticResource MaterialDesignRaisedAccentButton}" Width="150" materialDesign:RippleAssist.Feedback="#FFEC0E0E" Background="{DynamicResource {x:Static SystemColors.MenuBrushKey}}">Удалить TTL
+                                        <Button.Triggers>
+                                            <EventTrigger RoutedEvent="Button.Click">
+                                                <BeginStoryboard Storyboard="{StaticResource fadein}" />
+                                            </EventTrigger>
+                                        </Button.Triggers>
+                                    </Button>
+                                </Grid>
+                                <TextBlock Name="Notification" Text="{Binding Notification, UpdateSourceTrigger=PropertyChanged}"  Margin="0,50,0,0" FontSize="13" Foreground="#FF3891CD" HorizontalAlignment="Center" VerticalAlignment="Top" Opacity="100"/>
+
+                            </Grid>
+                            <Grid Background="#FF007ACC" Height="1" Margin="10 0 10 0"/>
+                        </StackPanel>
+                        <StackPanel VerticalAlignment="Top">
+                            <Grid Background="Transparent" Height="200" >
+                                <Grid Margin="20" Width="225" HorizontalAlignment="Left">
+                                    <StackPanel VerticalAlignment="Top" Height="50" >
+                                        <TextBox x:Name="newTTL" Height="50" ToolTip="Ввод TTL" Text="{Binding NewTTL}" Foreground="#FF3891CD" TextWrapping="Wrap" BorderBrush="#FF3891CD" TextAlignment="Center" FontSize="35" Background="Transparent" />
+                                    </StackPanel>
+                                    <StackPanel VerticalAlignment="Center" Height="50" >
+                                        <materialDesign:PackIcon Kind="ArrowDown" HorizontalAlignment="Center" Height="50" Width="50" Foreground="#FF56A7DE" />
+                                    </StackPanel>
+                                    <StackPanel VerticalAlignment="Bottom" Height="50" >
+                                        <TextBox x:Name="currentTTL"  Height="50" Text="{Binding CurrentTTL, UpdateSourceTrigger=PropertyChanged}" Focusable="False" ToolTip="Текущий TTL" TextWrapping="Wrap" BorderBrush="#FF3891CD"  TextAlignment="Center" FontSize="35" Background="Transparent" Foreground="#FF3891CD" UndoLimit="99" />
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Margin="20" Width="225" HorizontalAlignment="Right">
+                                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" >
+                            <Run FontSize="15" Foreground="#FF007ACC"  FontWeight="Bold">Настройки для подключения:</Run>
+                                    </TextBlock>
+                                    <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 35 0 0"  >
+                            <Run FontSize="15" Foreground="#FF007ACC"  FontWeight="Bold">Android - 65</Run>
+                                    </TextBlock>
+                                    <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 70 0 0"  >
+                            <Run FontSize="15" Foreground="#FF007ACC"  FontWeight="Bold">iOS - 65</Run>
+                                    </TextBlock>
+                                    <TextBlock TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0 105 0 0"  >
+                            <Run FontSize="15" Foreground="#FF007ACC"  FontWeight="Bold">Windows Phone - 130</Run>
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </materialDesign:TransitioningContent>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
