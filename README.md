@@ -11,4 +11,4 @@
 OS: Windows 10, Windows 8.1. 
 Раздача с: Android.
 
-![Screenshot](https://ibb.co/fpdW5p4)
+![Screenshot](https://i.ibb.co/0MyLSMh/TTL-WPF.jpg)
