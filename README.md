@@ -10,3 +10,5 @@
 Проверялось на: MTS, Tele2. 
 OS: Windows 10, Windows 8.1. 
 Раздача с: Android.
+
+![Screenshot](https://ibb.co/fpdW5p4)
